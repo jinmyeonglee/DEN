@@ -23,7 +23,7 @@ seed = 2
 torch.manual_seed(seed)
 
 # Experiment
-exp_name = 'den_gen2_v2'
+exp_name = 'den_gen2_v2_11'
 exp_dir = os.path.join('./models/', exp_name)
 if os.path.exists(exp_dir):
     print('Enter new experiment name!')
@@ -77,19 +77,22 @@ nyu = {
 }
 
 dataloaders = {
-    'train': data.DataLoader(nyu['train'], num_workers=8,
+    'train': data.DataLoader(nyu['train'], num_workers=2,
                              batch_size=batch_size, shuffle=True),
 
-    'val': data.DataLoader(nyu['val'], num_workers=8,
+    'val': data.DataLoader(nyu['val'], num_workers=2,
                            batch_size=batch_size, shuffle=True)
 }
 
-resnet_wts = './models/pretrained_resnet/model.pt'
-model = DEN(resnet_wts)
+#resnet_wts = './models/pretrained/resnet152_pretrained.pth'
+pretrained = torch.save(resnet152(pretrained=True).state_dict(), './models/resnet.pt')
+model = DEN(pretrained)
+# model = DEN()
 model = model.to(device)
 
 params_to_update = utils.params_to_update(model)
 optimizer = optim.Adam(model.parameters(), lr=16e-5)
-criterion = nn.MSELoss(reduction='sum')
+# criterion = nn.MSELoss(reduction='sum')
+criterion = DBELoss()
 
 train_model(model, dataloaders, criterion, optimizer, n_epochs, device, exp_dir, early_stopping_th)
