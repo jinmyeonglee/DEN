@@ -1,7 +1,9 @@
+import torch
 from torch.nn import Module
+from torch.autograd import Variable
 from torch.nn import functional as F
 
-class LaplacianLayer(nn.Module):
+class LaplacianLayer(Module):
     def __init__(self):
         super(LaplacianLayer, self).__init__()
         w_nom = torch.FloatTensor([[0, -1, 0], [-1, 4, -1], [0, -1, 0]]).view(1,1,3,3)
@@ -19,12 +21,12 @@ class LaplacianLayer(nn.Module):
             x = input.unsqueeze(1)
         else:
             x = input.unsqueeze(0).unsqueeze(0)
-        x_nom = torch.nn.functional.conv2d(input=x,
+        x_nom = F.conv2d(input=x,
                         weight=Variable(self.w_nom),
                         stride=1,
                         padding=0)
         if do_normalize:
-            x_den = torch.nn.functional.conv2d(input=x,
+            x_den = F.conv2d(input=x,
                         weight=Variable(self.w_den),
                         stride=1,
                         padding=0)
@@ -43,6 +45,8 @@ class LaplacianLayer(nn.Module):
 class DBELoss(Module):
     def __init__(self):
         super(DBELoss, self).__init__()
+        self.laplacian_func = LaplacianLayer()
+        self.lambda_S=.5
 
     def g(self, d, a1, a2):
             return a1*d + 0.5*a2*(d**2)
@@ -52,5 +56,12 @@ class DBELoss(Module):
         g_d_hat = self.g(d_hat, a1, a2)    
         g_d = self.g(d, a1, a2)
         dbe = 0.5 * F.mse_loss(g_d_hat, g_d, reduction='sum')
+        laplacian_smoothness_cost = self.compute_image_aware_laplacian_smoothness_cost(g_d, g_d_hat)
         
-        return dbe
+        return dbe + self.lambda_S * laplacian_smoothness_cost
+    
+    def compute_image_aware_laplacian_smoothness_cost(self, depth, img):
+        img_lap = self.laplacian_func(img/255, do_normalize=False)
+        depth_lap = self.laplacian_func(depth, do_normalize=False)
+        x = (-img_lap.mean(1)).exp()*(depth_lap)
+        return x.mean()
