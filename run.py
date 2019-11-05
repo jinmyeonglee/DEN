@@ -90,6 +90,7 @@ model = model.to(device)
 
 params_to_update = utils.params_to_update(model)
 optimizer = optim.Adam(model.parameters(), lr=16e-5)
-criterion = nn.MSELoss(reduction='sum')
+criterion = nn.MSELoss(reduction='sum')  # TODO: MSE -> DBE로 고치기.
+# criterion = DBELoss()
 
 train_model(model, dataloaders, criterion, optimizer, n_epochs, device, exp_dir, early_stopping_th)
