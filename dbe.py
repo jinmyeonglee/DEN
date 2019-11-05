@@ -61,10 +61,10 @@ class DBELoss(Module):
         return dbe + self.lambda_S * laplacian_smoothness_cost
     
     def compute_image_aware_laplacian_smoothness_cost(self, depth, img):
-        print('before lap', img.shape, depth.shape)
+        # print('before lap', img.shape, depth.shape)
         img_lap = self.laplacian_func(img/255, do_normalize=False)
         depth_lap = self.laplacian_func(depth, do_normalize=False)
-        print(img_lap.shape, depth_lap.shape)
-        print((-img_lap.mean()).exp().shape)
+        # print(img_lap.shape, depth_lap.shape)
+        # print((-img_lap.mean()).exp().shape)
         x = (-img_lap.mean()).exp() * (depth_lap)
         return x.mean()
