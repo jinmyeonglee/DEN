@@ -6,8 +6,8 @@ from torch.nn import functional as F
 class LaplacianLayer(Module):
     def __init__(self):
         super(LaplacianLayer, self).__init__()
-        w_nom = torch.FloatTensor([[0, -1, 0], [-1, 4, -1], [0, -1, 0]]).view(1,1,3,3)
-        w_den = torch.FloatTensor([[0, 1, 0], [1, 4, 1], [0, 1, 0]]).view(1,1,3,3)
+        w_nom = torch.cuda.FloatTensor([[0, -1, 0], [-1, 4, -1], [0, -1, 0]]).view(1,1,3,3)
+        w_den = torch.cuda.FloatTensor([[0, 1, 0], [1, 4, 1], [0, 1, 0]]).view(1,1,3,3)
         self.register_buffer('w_nom', w_nom)
         self.register_buffer('w_den', w_den)
 
