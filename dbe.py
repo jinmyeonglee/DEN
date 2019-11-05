@@ -65,6 +65,6 @@ class DBELoss(Module):
         img_lap = self.laplacian_func(img/255, do_normalize=False)
         depth_lap = self.laplacian_func(depth, do_normalize=False)
         print(img_lap.shape, depth_lap.shape)
-        print((-img_lap.mean(1)).exp().unsqueeze(0).shape)
-        x = (-img_lap.mean(1)).exp().unsqueeze(0) * (depth_lap)
+        print((-img_lap.mean()).exp().shape)
+        x = (-img_lap.mean()).exp() * (depth_lap)
         return x.mean()
