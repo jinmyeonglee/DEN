@@ -39,6 +39,9 @@ dataloader = data.DataLoader(nyu, batch_size=1, shuffle=True, num_workers=6)
 wts = args.model_path
 den = DEN()
 checkpoint = torch.load(wts)
+
+for param_tensor in den.state_dict():
+    print(param_tensor, "\t", den.state_dict()[param_tensor].size())
 den.load_state_dict(checkpoint, strict=False)
 den = den.to(device)
 den.eval()

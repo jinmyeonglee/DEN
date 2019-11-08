@@ -90,7 +90,6 @@ class DEN(nn.Module):
         
         outputs = []
         for i, block in enumerate(self.resnet_mid):
-            x = x.view(x.shape[0], -1)
             x = block(x)
             outputs.append(self.aux_modules[i](x))
             
