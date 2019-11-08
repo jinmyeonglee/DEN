@@ -1,4 +1,5 @@
 import torch
+import argparse
 from torch.utils import data
 from torchvision.transforms import Compose
 import os
@@ -11,6 +12,8 @@ from den import DEN
 data_path = './data/nyu_v2/'
 
 print("PyTorch Version: ",torch.__version__)
+
+parser = argparse.ArgumentParser()
 parser.add_argument("--model_path", type=str, required=True)
 args = parser.parse_args()
 
