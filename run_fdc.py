@@ -30,9 +30,9 @@ nyu = NyuV2(os.path.join(data_path, 'train'), transform=transform)
 dataloader = data.DataLoader(nyu, batch_size=1, shuffle=True, num_workers=6)
 
 wts = './models/den_gen2_v2/154_model.pt'
-den = DEN(wts)
-# checkpoint = torch.load(wts)
-# den.load_state_dict(checkpoint, strict=False)
+den = DEN()
+checkpoint = torch.load(wts)
+den.load_state_dict(checkpoint, strict=False)
 den = den.to(device)
 den.eval()
 print('DEN has been loaded')
