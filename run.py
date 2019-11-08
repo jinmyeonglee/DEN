@@ -20,14 +20,15 @@ import transforms_nyu
 parser = argparse.ArgumentParser()
 
 print("PyTorch Version: ",torch.__version__)
-parser.add_argument("--loss", type=str, required=True, help="Type of Loss Function)
+parser.add_argument("--loss", type=str, required=True, help="Type of Loss Function")
+parser.add_argument("--model_path", type=str, required=True)
 args = parser.parse_args()
 
 seed = 2
 torch.manual_seed(seed)
 
 # Experiment
-exp_name = 'den_gen2_v2_smdbe_loss'
+exp_name = args.model_path
 exp_dir = os.path.join('./models/', exp_name)
 if os.path.exists(exp_dir):
     print('Enter new experiment name!')
