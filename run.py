@@ -27,7 +27,7 @@ seed = 2
 torch.manual_seed(seed)
 
 # Experiment
-exp_name = 'den_gen2_v2_dbe_loss'
+exp_name = 'den_gen2_v2_smdbe_loss'
 exp_dir = os.path.join('./models/', exp_name)
 if os.path.exists(exp_dir):
     print('Enter new experiment name!')
