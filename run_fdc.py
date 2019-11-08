@@ -29,7 +29,7 @@ nyu = NyuV2(os.path.join(data_path, 'train'), transform=transform)
 
 dataloader = data.DataLoader(nyu, batch_size=1, shuffle=True, num_workers=6)
 
-wts = './models/temp_v3/042_model.pt'
+wts = './models/resnet.pt'
 den = DEN()
 den.load_state_dict(torch.load(wts))
 den = den.to(device)
