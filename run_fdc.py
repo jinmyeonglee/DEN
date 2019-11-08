@@ -10,6 +10,10 @@ from den import DEN
 
 data_path = './data/nyu_v2/'
 
+print("PyTorch Version: ",torch.__version__)
+parser.add_argument("--model_path", type=str, required=True)
+args = parser.parse_args()
+
 seed = 2
 torch.manual_seed(seed)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -29,7 +33,7 @@ nyu = NyuV2(os.path.join(data_path, 'train'), transform=transform)
 
 dataloader = data.DataLoader(nyu, batch_size=1, shuffle=True, num_workers=6)
 
-wts = './models/Flatten_SMDBE/002_model.pt'
+wts = args.model_path
 den = DEN()
 checkpoint = torch.load(wts)
 den.load_state_dict(checkpoint, strict=False)
