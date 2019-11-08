@@ -87,10 +87,7 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs, device, sa
                 
         time_elapsed = time.time() - since_epoch
         logger.info('Epoch complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
-    
-        for param_tensor in model.state_dict():
-            print(param_tensor, "\t", model.state_dict()[param_tensor].size())
-            
+
         # update saved losses
         if epoch % 2 == 0:
             pickle.dump(train_loss_history, open(os.path.join(save_dir, train_loss_pkl), 'wb'))

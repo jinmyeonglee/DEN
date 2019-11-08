@@ -13,7 +13,7 @@ from dataset import NyuV2
 from modeling import train_model
 from smdbe import SMDBELoss
 from dbe import DBELoss
-from den_gen2 import DEN
+from den import DEN
 import utils
 import transforms_nyu
 
