@@ -85,6 +85,7 @@ class DEN(nn.Module):
         self.resnet_mid = nn.ModuleList(flattened[35:54])
         self.avg_pool2d = flattened[54]
         self.fc = nn.Linear(25280, 25 * 32)
+        self.flatten = Flatten()
      
     
     def forward(self, input):
@@ -97,7 +98,8 @@ class DEN(nn.Module):
             outputs.append(self.aux_modules[i](x))
             
         x = self.avg_pool2d(x)
-        x = x.view(x.shape[0], -1)
+        # x = x.view(x.shape[0], -1)
+        x = self.flatten(x)
         outputs.append(x)
         outputs_concat = torch.cat(outputs, dim=1)
         out = self.fc(outputs_concat)
