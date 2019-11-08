@@ -49,7 +49,9 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs, device, sa
                 # forward
                 with torch.set_grad_enabled(phase == 'train'):
                     # Get model outputs and calculate loss
+                    print("Input Shape : ", inputs.shape)
                     outputs = model(inputs)
+                    print("Output Shape : ", outputs.shape)
 
                     # backward + optimize only if in training phase
                     if phase == 'train':
