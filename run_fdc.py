@@ -34,7 +34,7 @@ transform = Compose([
 
 nyu = NyuV2(os.path.join(data_path, 'train'), transform=transform)
 
-dataloader = data.DataLoader(nyu, batch_size=1, shuffle=True, num_workers=6)
+dataloader = data.DataLoader(nyu, batch_size=8, shuffle=True, num_workers=6)
 
 wts = args.model_path
 den = DEN()

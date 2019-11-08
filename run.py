@@ -96,14 +96,15 @@ model = model.to(device)
 params_to_update = utils.params_to_update(model)
 optimizer = optim.Adam(model.parameters(), lr=16e-5)
 
-if(args.loss == 'MSE') :
-    criterion = nn.MSELoss(reduction='sum')
-
-elif(args.loss == 'SMDBE') :
+if(args.loss == 'SMDBE') :
     criterion = SMDBELoss()
 
 elif(args.loss=='DBE') :
     criterion = DBELoss()
+
+else :
+    print("Using MSELoss")
+    criterion = nn.MSELoss(reduction='sum')
 
 
 train_model(model, dataloaders, criterion, optimizer, n_epochs, device, exp_dir, early_stopping_th)
