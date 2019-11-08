@@ -30,7 +30,9 @@ class DEN(nn.Module):
     def __init__(self, backbone_wts=None, backbone_freeze=True, p=0):
         super(DEN, self).__init__()
 
-        resnet = resnet152(pretrained=False)
+        resnet = resnet152(pretrained=True)
+        # pretrained = torch.save(resnet152(pretrained=True).state_dict(), './models/resnet.pt')
+
         if backbone_wts != None:
             resnet = self._init_resnet(resnet, backbone_wts)
         

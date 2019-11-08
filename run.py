@@ -89,8 +89,9 @@ dataloaders = {
                            batch_size=batch_size, shuffle=True)
 }
 
-pretrained = torch.save(resnet152(pretrained=True).state_dict(), './models/resnet.pt')
-model = DEN(pretrained)
+# pretrained = torch.save(resnet152(pretrained=True).state_dict(), './models/resnet.pt')
+# model = DEN(pretrained)
+model = DEN()
 model = model.to(device)
 
 params_to_update = utils.params_to_update(model)
