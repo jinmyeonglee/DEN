@@ -92,10 +92,6 @@ dataloaders = {
 # pretrained = torch.save(resnet152(pretrained=True).state_dict(), './models/resnet.pt')
 # model = DEN(pretrained)
 model = DEN()
-
-for param_tensor in model.state_dict():
-    print(param_tensor, "\t", model.state_dict()[param_tensor].size())
-
 model = model.to(device)
 
 params_to_update = utils.params_to_update(model)
