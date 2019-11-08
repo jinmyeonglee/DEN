@@ -96,7 +96,7 @@ class DEN(nn.Module):
             outputs.append(self.aux_modules[i](x))
             
         x = self.avg_pool2d(x)
-        # x = x.view(x.shape[0], -1)
+        x = x.view(x.shape[0], -1)
         # x = self.flatten(x)
         outputs.append(x)
         outputs_concat = torch.cat(outputs, dim=1)
