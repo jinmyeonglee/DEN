@@ -1,4 +1,5 @@
 import os
+import argparse
 import torch
 from torch.utils import data
 from torch import nn, optim
@@ -16,9 +17,11 @@ from den_gen2 import DEN
 import utils
 import transforms_nyu
 
+parser = argparse.ArgumentParser()
 
 print("PyTorch Version: ",torch.__version__)
-
+parser.add_argument("--loss", type=str, required=True, help="Type of Loss Function)
+args = parser.parse_args()
 
 seed = 2
 torch.manual_seed(seed)
@@ -92,7 +95,10 @@ model = model.to(device)
 params_to_update = utils.params_to_update(model)
 optimizer = optim.Adam(model.parameters(), lr=16e-5)
 # criterion = nn.MSELoss(reduction='sum')  # TODO: MSE -> DBE로 고치기.
-criterion = SMDBELoss()
-# criterion = DBELoss()
+
+if(args.loss == 'SMDBE') :
+    criterion = SMDBELoss()
+else :
+    criterion = DBELoss()
 
 train_model(model, dataloaders, criterion, optimizer, n_epochs, device, exp_dir, early_stopping_th)
