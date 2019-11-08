@@ -10,6 +10,7 @@ from shutil import copy
 from train_logger import TrainHandler
 from dataset import NyuV2
 from modeling import train_model
+from smdbe import SMDBELoss
 from dbe import DBELoss
 from den_gen2 import DEN
 import utils
@@ -91,6 +92,7 @@ model = model.to(device)
 params_to_update = utils.params_to_update(model)
 optimizer = optim.Adam(model.parameters(), lr=16e-5)
 # criterion = nn.MSELoss(reduction='sum')  # TODO: MSE -> DBE로 고치기.
-criterion = DBELoss()
+criterion = SMDBELoss()
+# criterion = DBELoss()
 
 train_model(model, dataloaders, criterion, optimizer, n_epochs, device, exp_dir, early_stopping_th)
