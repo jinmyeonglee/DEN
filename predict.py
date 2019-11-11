@@ -22,7 +22,7 @@ den_wts = args.model_path
 
 den = DEN(den_wts)
 depth = den(x)
-save_image(depth, "/root/DEN/images/depth_img" + args.model_path.split("/")[-1])
+save_image(depth, "/root/DEN/images/depth_img/" + args.model_path.split("/")[-1])
 
 
 
