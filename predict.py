@@ -19,7 +19,7 @@ class FDCPredictor:
     def __init__(self, den_path, fdc_path):
         self.den_model_pth = den_path
         self.den = DEN()
-        self.den.load_state_dict(torch.load(self.den_model_pth, strict=False))
+        self.den.load_state_dict(torch.load(self.den_model_pth), strict=False)
 
         self.fdc = FDC(self.den)
         self.fdc.load_weights(fdc_path)
@@ -31,13 +31,14 @@ class FDCPredictor:
                         ])
     
     def prediction(self, img_path):
-        image = Image.open(img_path)
+        image = open(img_path, 'r')
         cropped = self.transform(image)
         x = []
         for one in cropped:
             x.append(TF.to_tensor(one))
         x = torch.cat(x, dim=1)
         x.unsqueeze(0)
+        image.close()
         return self.fdc(x)[0]
     
     def save(self, img, des_path):
