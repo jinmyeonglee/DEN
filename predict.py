@@ -32,11 +32,12 @@ class FDCPredictor:
                         ])
     
     def prediction(self, img_path):
+        print(img_path.split("."))
         with open(img_path, 'rb') as f_img:
             image = pickle.load(f_img)
-        img = Image.fromarray(image.numpy())
-        img.save(img_path.split(".")[0] + ".tiff")
-        print(img_path.split(".")[0] + ".tiff" + " saved!")
+        img = Image.fromarray(image, 'RGB')
+        img.save(img_path + "ng")
+        print(img_path + "ng" + " saved!")
 
         nyu_dict = {'image': image, 'depth': image}
         cropped = self.transform(nyu_dict)['stacked_images']
@@ -47,8 +48,8 @@ class FDCPredictor:
     
     def save(self, img, des_path):
         img = Image.fromarray(img.numpy())
-        img.save("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".tiff")
-        print("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".tiff" + "saved!")
+        img.save("/root/DEN/images/depth_img/" + des_path.split(".")[-2] + ".tiff")
+        print("/root/DEN/images/depth_img/" + des_path.split(".")[-2] + ".tiff" + "saved!")
 
 if __name__ == "__main__":
     args = parser.parse_args()
