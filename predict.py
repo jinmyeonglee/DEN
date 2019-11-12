@@ -32,14 +32,12 @@ class FDCPredictor:
     
     def prediction(self, img_path):
         image = open(img_path, 'r')
-        cropped = self.transform(image)
-        x = []
-        for one in cropped:
-            x.append(TF.to_tensor(one))
-        x = torch.cat(x, dim=1)
-        x.unsqueeze(0)
+        nyu_dict = {'image': image, 'depth': image}
+        cropped = self.transform(nyu_dict)['stacked_images']
+
+        cropped.unsqueeze(0)
         image.close()
-        return self.fdc(x)[0]
+        return self.fdc(cropped)[0]
     
     def save(self, img, des_path):
         save_image(img, "/root/DEN/images/depth_img/" + des_path)
