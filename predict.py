@@ -7,6 +7,7 @@ from PIL import Image
 import torchvision.transforms.functional as TF
 import transforms_nyu
 from torchvision.transforms import Compose
+import pickle
 
 
 parser = argparse.ArgumentParser()
@@ -31,7 +32,7 @@ class FDCPredictor:
                         ])
     
     def prediction(self, img_path):
-        image = open(img_path, 'r')
+        image = pickle.load(img_path)
         nyu_dict = {'image': image, 'depth': image}
         cropped = self.transform(nyu_dict)['stacked_images']
 
