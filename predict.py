@@ -37,14 +37,14 @@ class FDCPredictor:
         nyu_dict = {'image': image, 'depth': image}
         cropped = self.transform(nyu_dict)['stacked_images']
         cropped = cropped.unsqueeze(0)
-        bsz, c, h, w = cropped.size()
-        print(cropped.size())
-        return self.fdc(cropped.view(-1,c,h,w))[0]
+        bsize, crops, c, h, w = cropped.size()
+        print(bsize, crops, c, h, w)
+        return self.fdc(cropped)[0]
     
     def save(self, img, des_path):
-        # TOOD: binary -> img
-        save_image(img, "/root/DEN/images/depth_img/" + des_path)
-        print("/root/DEN/images/depth_img/" + des_path + "saved!")
+        img = TF.to_pil_image(img)
+        save_image(img, "/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".png")
+        print("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".png" + "saved!")
 
 if __name__ == "__main__":
     args = parser.parse_args()
