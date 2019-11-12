@@ -37,7 +37,7 @@ class FDCPredictor:
         nyu_dict = {'image': image, 'depth': image}
         cropped = self.transform(nyu_dict)['stacked_images']
         cropped.unsqueeze(0)
-        bsz, ncrops, c, h, w = cropped.size()
+        bsz, c, h, w = cropped.size()
         return self.fdc(cropped.view(-1,c,h,w))[0]
     
     def save(self, img, des_path):
