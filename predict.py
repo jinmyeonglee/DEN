@@ -1,29 +1,49 @@
 import torch
 import argparse
 from den import DEN
+from fdc import FDC
 from torchvision.utils import save_image
 from PIL import Image
 import torchvision.transforms.functional as TF
-
+import transforms_nyu
+from torchvision.transforms import Compose
 
 
 parser = argparse.ArgumentParser()
-
-print("PyTorch Version: ",torch.__version__)
 parser.add_argument("--image", type=str, required=True)
 parser.add_argument("--model_path", type=str, required=True)
-args = parser.parse_args()
 
 
-image = Image.open(args.image)
-x = TF.to_tensor(image)
+class FDCPredictor:
+    def __init__(self, model_path):
+        self.den_model_pth = model_path
+        self.den = DEN()
+        self.den.load_state_dict(torch.load(self.den_model_pth, strict=False))
 
-den_wts = args.model_path
+        self.fdc = FDC(self.den)
 
-den = DEN(den_wts)
-depth = den(x)
-save_image(depth, "/root/DEN/images/depth_img/" + args.model_path.split("/")[-1])
+        self.crop_ratios = [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]
+        self.transform = Compose([
+                                transforms_nyu.Normalize(),
+                                transforms_nyu.FDCPreprocess(self.crop_ratios)
+                        ])
+    
+    def prediction(self, img_path):
+        image = Image.open(img_path)
+        cropped = self.transform(image)
+        x = []
+        for one in cropped:
+            x.append(TF.to_tensor(one))
+        x = torch.cat(x, dim=1)
+        x.unsqueeze(0)
+        return self.fdc(x)[0]
+    
+    def save(self, img, des_path):
+        save_image(img, "/root/DEN/images/depth_img/" + des_path)
 
+if __name__ == "__main__":
+    args = parser.parse_args()
 
-
-
+    predictor = FDCPredictor(args.model_path)
+    result = predictor.prediction(args.image)
+    predictor.save(result, args.image.split("/")[-1])
