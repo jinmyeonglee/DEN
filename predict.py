@@ -12,15 +12,17 @@ from torchvision.transforms import Compose
 parser = argparse.ArgumentParser()
 parser.add_argument("--image", type=str, required=True)
 parser.add_argument("--model_path", type=str, required=True)
+parser.add_argument("--fdc_weight_path", type=str, required=True)
 
 
 class FDCPredictor:
-    def __init__(self, model_path):
-        self.den_model_pth = model_path
+    def __init__(self, den_path, fdc_path):
+        self.den_model_pth = den_path
         self.den = DEN()
         self.den.load_state_dict(torch.load(self.den_model_pth, strict=False))
 
         self.fdc = FDC(self.den)
+        self.fdc.load_weights(fdc_path)
 
         self.crop_ratios = [0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1]
         self.transform = Compose([
@@ -44,6 +46,6 @@ class FDCPredictor:
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    predictor = FDCPredictor(args.model_path)
+    predictor = FDCPredictor(args.model_path, args.fdc_weight_path)
     result = predictor.prediction(args.image)
     predictor.save(result, args.image.split("/")[-1])
