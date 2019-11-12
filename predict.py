@@ -32,12 +32,12 @@ class FDCPredictor:
                         ])
     
     def prediction(self, img_path):
-        image = pickle.load(img_path)
+        with open(img_path, 'rb') as f_img:
+            image = pickle.load(f_img)
         nyu_dict = {'image': image, 'depth': image}
         cropped = self.transform(nyu_dict)['stacked_images']
 
         cropped.unsqueeze(0)
-        image.close()
         return self.fdc(cropped)[0]
     
     def save(self, img, des_path):
