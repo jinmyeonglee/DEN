@@ -42,7 +42,7 @@ class FDCPredictor:
         return self.fdc(cropped)[0]
     
     def save(self, img, des_path):
-        img = TF.to_pil_image(img)
+        img = TF.to_pil_image(img.numpy())
         save_image(img, "/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".png")
         print("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".png" + "saved!")
 
