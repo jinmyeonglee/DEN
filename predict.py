@@ -36,11 +36,13 @@ class FDCPredictor:
             image = pickle.load(f_img)
         nyu_dict = {'image': image, 'depth': image}
         cropped = self.transform(nyu_dict)['stacked_images']
-        cropped.unsqueeze(0)
+        cropped = cropped.unsqueeze(0)
         bsz, c, h, w = cropped.size()
+        print(cropped.size())
         return self.fdc(cropped.view(-1,c,h,w))[0]
     
     def save(self, img, des_path):
+        # TOOD: binary -> img
         save_image(img, "/root/DEN/images/depth_img/" + des_path)
         print("/root/DEN/images/depth_img/" + des_path + "saved!")
 
