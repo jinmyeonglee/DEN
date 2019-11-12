@@ -43,8 +43,8 @@ class FDCPredictor:
     
     def save(self, img, des_path):
         img = Image.fromarray(img.numpy())
-        img.save("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".png")
-        print("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".png" + "saved!")
+        img.save("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".tiff")
+        print("/root/DEN/images/depth_img/" + des_path.split(".")[0] + ".tiff" + "saved!")
 
 if __name__ == "__main__":
     args = parser.parse_args()
